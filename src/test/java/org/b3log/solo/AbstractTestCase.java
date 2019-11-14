@@ -80,9 +80,9 @@ public abstract class AbstractTestCase {
         BeanManager.start(classes);
         beanManager = BeanManager.getInstance();
 
-        final Connection connection = Connections.getConnection();
-        connection.createStatement().execute("DROP ALL OBJECTS");
-        connection.close();
+//        final Connection connection = Connections.getConnection();
+//        connection.createStatement().execute("DROP ALL OBJECTS");
+//        connection.close();
 
         JdbcRepositories.initAllTables();
     }
