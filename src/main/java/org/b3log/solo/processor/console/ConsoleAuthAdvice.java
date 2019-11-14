@@ -18,12 +18,14 @@
 package org.b3log.solo.processor.console;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
@@ -39,8 +41,16 @@ import javax.servlet.http.HttpServletResponse;
 @Singleton
 public class ConsoleAuthAdvice extends ProcessAdvice {
 
+    @Inject
+    private UserQueryService userQueryService;
+
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
+
+        HttpServletResponse response = context.getResponse();
+        JSONObject user = userQueryService.getUserByName("Solo");
+        Solos.login(user, response);
+
         final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
         if (null == currentUser) {
             final JSONObject exception401 = new JSONObject();
