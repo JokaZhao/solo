@@ -34,7 +34,7 @@ import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.*;
-import org.b3log.latke.service.LangPropsService;
+import org.b3log.solo.util.Lang;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.servlet.RequestContext;
@@ -170,7 +170,7 @@ public class DataModelService {
      * Language service.
      */
     @Inject
-    private LangPropsService langPropsService;
+    private Lang langPropsService;
 
     /**
      * User management service.
@@ -1040,7 +1040,7 @@ public class DataModelService {
         if (StringUtils.isBlank(articleAbstractText)) {
             // 发布文章时会自动提取摘要文本，其中如果文章加密且没有写摘要，则自动提取文本会返回空字符串 Article#getAbstractText()
             // 所以当且仅当文章加密且没有摘要的情况下 articleAbstractText 会为空
-            final LangPropsService langPropsService = BeanManager.getInstance().getReference(LangPropsService.class);
+            final Lang langPropsService = BeanManager.getInstance().getReference(Lang.class);
             article.put(Article.ARTICLE_ABSTRACT_TEXT, langPropsService.get("articleContentPwd"));
         }
 

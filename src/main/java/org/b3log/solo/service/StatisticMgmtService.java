@@ -22,7 +22,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.service.LangPropsService;
+import org.b3log.solo.util.Lang;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.servlet.RequestContext;
@@ -86,7 +86,7 @@ public class StatisticMgmtService {
      * Language service.
      */
     @Inject
-    private LangPropsService langPropsService;
+    private Lang langPropsService;
 
     /**
      * Article repository.

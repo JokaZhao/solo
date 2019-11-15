@@ -31,7 +31,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.service.LangPropsService;
+import org.b3log.solo.util.Lang;
 import org.b3log.latke.util.Callstacks;
 import org.b3log.latke.util.Stopwatchs;
 import org.json.JSONObject;
@@ -143,7 +143,7 @@ public final class Markdowns {
             return cachedHTML;
         }
 
-        final LangPropsService langPropsService = BeanManager.getInstance().getReference(LangPropsService.class);
+        final Lang langPropsService = BeanManager.getInstance().getReference(Lang.class);
 
         final ExecutorService pool = Executors.newSingleThreadExecutor();
         final long[] threadId = new long[1];

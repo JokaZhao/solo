@@ -22,7 +22,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.service.LangPropsService;
+import org.b3log.solo.util.Lang;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
@@ -72,7 +72,7 @@ public class CategoryProcessor {
      * Language service.
      */
     @Inject
-    private LangPropsService langPropsService;
+    private Lang langPropsService;
 
     /**
      * Option query service.

@@ -1,4 +1,5 @@
-
+<#include "macro-common_page.ftl">
+<@commonPage "${welcomeToSoloLabel}!">
 <h2>
     <span>${welcomeToSoloLabel}</span>
     <a target="_blank" href="https://solo.b3log.org">
@@ -12,14 +13,6 @@
     </div>
     <br>
     <button class="startAction">${useGitHubAccountLoginLabel}</button><br>
-    <a class="github__link" href="javascript:$('ul').slideToggle()">查看 GitHub 数据使用说明</a>
-    <div class="github__text">
-        <ul>
-            <li>获取用户名、头像等用于初始化</li>
-            <li>获取公开仓库信息用于展示</li>
-            <li>不会对你的已有数据进行写入</li>
-        </ul>
-    </div>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript">
@@ -35,3 +28,4 @@
         }
     })()
 </script>
+</@commonPage>

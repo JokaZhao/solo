@@ -29,7 +29,7 @@ import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.PluginStatus;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.service.LangPropsService;
+import org.b3log.solo.util.Lang;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.repository.PluginRepository;
 import org.json.JSONException;
@@ -63,7 +63,7 @@ public class PluginMgmtService {
      * Language service.
      */
     @Inject
-    private LangPropsService langPropsService;
+    private Lang langPropsService;
 
     /**
      * Initialization service.

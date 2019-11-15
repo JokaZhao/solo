@@ -26,7 +26,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.service.LangPropsService;
+import org.b3log.solo.util.Lang;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.Locales;
@@ -135,7 +135,7 @@ public final class Skins {
         try {
             // Fills the core language configurations
             final BeanManager beanManager = BeanManager.getInstance();
-            final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
+            final Lang langPropsService = beanManager.getReference(Lang.class);
             dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
 
             if (StringUtils.isBlank(currentSkinDirName)) {

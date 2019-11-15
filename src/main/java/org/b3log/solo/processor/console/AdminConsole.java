@@ -33,7 +33,7 @@ import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.jdbc.util.Connections;
-import org.b3log.latke.service.LangPropsService;
+import org.b3log.solo.util.Lang;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
@@ -82,7 +82,7 @@ public class AdminConsole {
      * Language service.
      */
     @Inject
-    private LangPropsService langPropsService;
+    private Lang langPropsService;
 
     /**
      * Option query service.

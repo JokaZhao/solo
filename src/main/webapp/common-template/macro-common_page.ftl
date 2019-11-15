@@ -42,7 +42,7 @@
     </div>
     <div class="footerWrapper">
         <div class="footer">
-            Powered by <a href="https://b3log.org" target="_blank">B3log 开源</a> • <a href="https://solo.b3log.org" target="_blank">Solo</a> ${version}
+            Powered by Joka.Copyright © ${year}
         </div>
     </div>
 </div>
