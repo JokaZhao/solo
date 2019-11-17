@@ -24,7 +24,6 @@
 */
 
 @import "reset";
-@import "vditor/src/assets/scss/classic";
 
 /* reset */
 button {
@@ -99,8 +98,8 @@ input[type=text]:focus {
 
 /* framework */
 .wrap {
-    border-top: 5px solid #E6E5D9;
-    background-color: #F3F1E5;
+    border-top: 5px solid #6EBBAc;
+    background-color: #6EBBAC;
     display: flex;
     flex-direction: column;
     min-height: 100vh;

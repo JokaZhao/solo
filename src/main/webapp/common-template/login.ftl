@@ -1,18 +1,15 @@
 <#include "macro-common_page.ftl">
 <@commonPage "${welcomeToSoloLabel}!">
 <h2>
-    <span>${welcomeToSoloLabel}</span>
-    <a target="_blank" href="https://solo.b3log.org">
-        <span class="error">&nbsp;Solo</span>
-    </a>
+    <span>${welcomeToSoloLabel} Solo</span>
 </h2>
 
 <div id="github">
-    <div class="github__icon startAction">
-        <img src="${staticServePath}/images/github.png"/>
-    </div>
-    <br>
-    <button class="startAction">${useGitHubAccountLoginLabel}</button><br>
+<#--    <div class="github__icon startAction">-->
+<#--        <img src="${staticServePath}/images/github.png"/>-->
+<#--    </div>-->
+<#--    <br>-->
+<#--    <button class="startAction">${useGitHubAccountLoginLabel}</button><br>-->
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript">
