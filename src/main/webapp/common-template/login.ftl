@@ -10,6 +10,24 @@
 <#--    </div>-->
 <#--    <br>-->
 <#--    <button class="startAction">${useGitHubAccountLoginLabel}</button><br>-->
+    <div class="login-box active">
+        <div class="login-body">
+            <div class="form form__no-table">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input id="userName" type="text">
+                </div>
+                <div class="form-group">
+                    <label>登录密码</label>
+                    <input id="password" type="password">
+                </div>
+                <div class="form-group">
+                    <button class="login-button">登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript">
