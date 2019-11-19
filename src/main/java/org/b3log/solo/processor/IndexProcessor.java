@@ -24,6 +24,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.solo.render.SkinRenderer;
 import org.b3log.solo.util.Lang;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HttpMethod;

@@ -3,6 +3,7 @@ package org.b3log.solo.processor;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.solo.render.SkinRenderer;
 import org.b3log.solo.util.Lang;
 import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
@@ -14,7 +15,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.OptionQueryService;
-import org.b3log.solo.util.Lang;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
@@ -54,5 +55,14 @@ public class LoginProcessor {
         dataModelService.fillFaviconURL(dataModel, optionQueryService.getPreference());
         dataModelService.fillMinified(dataModel);
         dataModelService.fillUsite(dataModel);
+    }
+
+    @RequestProcessing(value="/getTicket",method = HttpMethod.POST)
+    public void getTicket(final RequestContext context){
+
+        final JSONObject ret = new JSONObject().put(Keys.CODE, 0);
+        context.renderJSON(ret);
+
+
     }
 }
