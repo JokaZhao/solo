@@ -15,7 +15,7 @@ import java.util.UUID;
  * Description : 存储会话Token
  */
 @Singleton
-public class SessionCache {
+public class TokenCache {
 
     /**
      * key : userName
@@ -37,14 +37,7 @@ public class SessionCache {
             return null;
         }
 
-        Date now = new Date();
-
-        if ((now.getTime() - tokenInfo.getExpireDate().getTime()) > 10000) {
-            cache.remove(key);
-            return null;
-        } else {
-            return tokenInfo.getToken();
-        }
+        return tokenInfo.getToken();
 
     }
 
@@ -68,27 +61,19 @@ public class SessionCache {
 
         cache.put(userName, new TokenInfo(token));
 
-        return getToken(token);
+        return getToken(userName);
     }
 
     class TokenInfo {
 
         private final String token;
 
-        private final Date expireDate;
-
         public TokenInfo(String token) {
             this.token = token;
-            this.expireDate = new Date();
         }
 
         public String getToken() {
             return token;
-        }
-
-
-        public Date getExpireDate() {
-            return expireDate;
         }
 
     }

@@ -27,7 +27,8 @@
             </div>
         </div>
     </div>
-    </div>
+    <input type="hidden" id="kid" name="kid" value="${kid}" />
+    <input type="hidden" id="token" name="token" value="${token}" />
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript">

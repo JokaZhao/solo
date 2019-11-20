@@ -163,6 +163,16 @@ public final class Common {
     public static final String VERSION = "version";
 
     /**
+     * 登录所使用的令牌
+     */
+    public static final String TOKEN = "token";
+
+    /**
+     * 登录使用的临时userName
+     */
+    public static final String TOKEN_NAME = "kid";
+
+    /**
      * Static resource version.
      */
     public static final String STATIC_RESOURCE_VERSION = "staticResourceVersion";
