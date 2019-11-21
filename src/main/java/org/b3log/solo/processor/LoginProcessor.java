@@ -1,10 +1,13 @@
 package org.b3log.solo.processor;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.cache.TokenCache;
+import org.b3log.solo.model.LoginForm;
 import org.b3log.solo.render.SkinRenderer;
 import org.b3log.solo.util.Lang;
 import org.b3log.latke.servlet.HttpMethod;
@@ -30,7 +33,7 @@ import java.util.Map;
  * Description :
  */
 @RequestProcessor
-public class LoginProcessor {
+public class LoginProcessor extends BaseProcess{
     @Inject
     private Lang langPropsService;
     @Inject
@@ -64,5 +67,49 @@ public class LoginProcessor {
         dataModelService.fillUsite(dataModel);
     }
 
+    @RequestProcessing(value = "/getTicket",method = HttpMethod.POST)
+    public void getTicket(final RequestContext context){
+        JsonRenderer renderer = new JsonRenderer();
+        context.setRenderer(renderer);
+
+        String kid = context.param("kid");
+
+        if (StringUtils.isEmpty(kid)){
+            renderer.setJSONObject(err("参数校验失败"));
+            return;
+        }
+
+    }
+
+
+
+
+
+    /**
+     * 后台登录验证
+     * @param context
+     */
+    @RequestProcessing(value="/auth" ,method = HttpMethod.POST)
+    public void auth(final RequestContext context){
+
+        LoginForm loginForm = new LoginForm(context);
+
+        // 参数校验
+        if (!loginForm.verify()){
+            JsonRenderer renderer = new JsonRenderer();
+            context.setRenderer(renderer);
+
+            JSONObject err = new JSONObject();
+
+            err.put("resultCode","000001");
+            err.put("resultMsg","参数缺失");
+            renderer.setJSONObject(err);
+            return;
+        }
+
+
+
+
+    }
 
 }
