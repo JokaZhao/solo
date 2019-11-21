@@ -22,24 +22,26 @@ public class AuthService {
     @Inject
     private TokenCache tokenCache;
 
-    public boolean authLogin(LoginForm form){
-
-        String kid = form.getKid();
+    public String getUserSalt(String userName, String kid, String paramToken) {
 
         String token = tokenCache.getToken(kid);
 
-        if (StringUtils.isEmpty(token)){
-
+        if (StringUtils.isEmpty(token)) {
             LOGGER.info("无法获取到登录Token，登录token失效或者非法登录");
-
-            throw new RuntimeException("登录失败");
-
-        }
-
-        if (!token.equals(form.getToken())){
-            LOGGER.info("登录Token不一致，origin-{},param-{}",token,form.getToken());
             throw new RuntimeException("登录失败");
         }
+
+        if (!token.equals(paramToken)) {
+            LOGGER.info("登录Token不一致，origin-{},param-{}", token, paramToken);
+            throw new RuntimeException("登录失败");
+        }
+
+        return null;
+
+    }
+
+    public boolean authLogin(LoginForm form) {
+
 
         return false;
     }

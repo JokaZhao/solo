@@ -7,8 +7,10 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.cache.TokenCache;
+import org.b3log.solo.common.Pair;
 import org.b3log.solo.model.LoginForm;
 import org.b3log.solo.render.SkinRenderer;
+import org.b3log.solo.service.AuthService;
 import org.b3log.solo.util.Lang;
 import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
@@ -48,6 +50,9 @@ public class LoginProcessor extends BaseProcess{
     @Inject
     private TokenCache tokenCache;
 
+    @Inject
+    private AuthService authService;
+
     @RequestProcessing(value = "/login", method = HttpMethod.GET)
     public void showLogin(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "common-template/login.ftl");
@@ -74,11 +79,24 @@ public class LoginProcessor extends BaseProcess{
 
         String kid = context.param("kid");
 
+        String token = context.param("tokne");
+
+        String userName = context.param("userName");
+
         if (StringUtils.isEmpty(kid)){
             renderer.setJSONObject(err("参数校验失败"));
             return;
         }
 
+        if (StringUtils.isEmpty(token)){
+            renderer.setJSONObject(err("参数校验失败token"));
+        }
+
+        String salt = authService.getUserSalt(userName, kid, token);
+
+        Pair kv = Pair.createInstance().kv("salt", salt).kv("resultCode", "000000");
+
+        renderer.setJSONObject(kv.getJSON());
     }
 
 
