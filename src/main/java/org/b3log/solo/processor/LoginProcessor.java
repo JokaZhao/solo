@@ -10,6 +10,7 @@ import org.b3log.solo.cache.TokenCache;
 import org.b3log.solo.common.Pair;
 import org.b3log.solo.model.LoginForm;
 import org.b3log.solo.render.SkinRenderer;
+import org.b3log.solo.repository.UserLoginInfoRepository;
 import org.b3log.solo.service.AuthService;
 import org.b3log.solo.util.Lang;
 import org.b3log.latke.servlet.HttpMethod;
@@ -72,6 +73,10 @@ public class LoginProcessor extends BaseProcess{
         dataModelService.fillUsite(dataModel);
     }
 
+    /**
+     * 获取获取名称对应的Token
+     * @param context
+     */
     @RequestProcessing(value = "/getTicket",method = HttpMethod.POST)
     public void getTicket(final RequestContext context){
         JsonRenderer renderer = new JsonRenderer();
@@ -92,9 +97,11 @@ public class LoginProcessor extends BaseProcess{
             renderer.setJSONObject(err("参数校验失败token"));
         }
 
-        String salt = authService.getUserSalt(userName, kid, token);
+        String ticket = authService.getUserTicket(userName, kid, token);
 
-        Pair kv = Pair.createInstance().kv("salt", salt).kv("resultCode", "000000");
+        Pair kv = Pair.createInstance()
+                .kv("ticket", ticket)
+                .kv("resultCode", "000000");
 
         renderer.setJSONObject(kv.getJSON());
     }
@@ -120,6 +127,8 @@ public class LoginProcessor extends BaseProcess{
             renderer.setJSONObject(err);
             return;
         }
+
+
 
 
 

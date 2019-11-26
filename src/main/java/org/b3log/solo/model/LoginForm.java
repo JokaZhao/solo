@@ -27,6 +27,11 @@ public class LoginForm {
     private String token;
 
     /**
+     * 使用用户名所换取的ticket
+     */
+    private String ticket;
+
+    /**
      * 临时userName
      */
     private String kid;
@@ -41,6 +46,7 @@ public class LoginForm {
         this.kid = context.param("kid");
         this.pw = context.param("pw");
         this.token = context.param("token");
+        this.ticket = context.param("ticket");
 
     }
 
@@ -48,7 +54,8 @@ public class LoginForm {
         return StringUtils.isNotEmpty(userName)
                 && StringUtils.isNotEmpty(kid)
                 && StringUtils.isNotEmpty(pw)
-                && StringUtils.isNotEmpty(token);
+                && StringUtils.isNotEmpty(token)
+                && StringUtils.isNotEmpty(ticket);
     }
 
     public String getUserName() {
@@ -81,5 +88,13 @@ public class LoginForm {
 
     public void setKid(String kid) {
         this.kid = kid;
+    }
+
+    public String getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
     }
 }
