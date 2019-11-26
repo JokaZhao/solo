@@ -21,7 +21,7 @@ public class TokenCache {
      * key : userName
      * val : token
      */
-    private final Map<String, TokenInfo> cache = new ExpireMap<>();
+    private final ExpireMap<String, TokenInfo> cache = new ExpireMap<>();
 
     /**
      * 通过UserName获取token
@@ -41,11 +41,20 @@ public class TokenCache {
 
     }
 
+
+    /**
+     * 创建一个过期时间为10分钟的Token
+     */
+    public String createToken(String userName) {
+        return createToken(userName, 60*1000*10L);
+
+    }
+
     /**
      * 通过UserName来创建Token，如果已经存在，则直接返回已经创建的Token
      * Token的类型是UUID，去除‘-’号后生成的32位字符串
      */
-    public String createToken(String userName) {
+    public String createToken(String userName, Long time) {
 
         if (StringUtils.isEmpty(userName)) {
             throw new RuntimeException("创建登录Token失败，userName为空");
@@ -59,9 +68,10 @@ public class TokenCache {
 
         token = UUID.randomUUID().toString().replace("-", "");
 
-        cache.put(userName, new TokenInfo(token));
+        cache.put(userName, new TokenInfo(token), time);
 
         return getToken(userName);
+
     }
 
     class TokenInfo {

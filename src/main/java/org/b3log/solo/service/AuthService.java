@@ -36,7 +36,9 @@ public class AuthService {
             throw new RuntimeException("登录失败");
         }
 
-        return null;
+        String ticket = tokenCache.createToken(userName, 10 * 1000L);
+
+        return ticket;
 
     }
 

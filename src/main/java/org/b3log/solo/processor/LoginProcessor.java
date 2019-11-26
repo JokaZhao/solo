@@ -99,10 +99,6 @@ public class LoginProcessor extends BaseProcess{
         renderer.setJSONObject(kv.getJSON());
     }
 
-
-
-
-
     /**
      * 后台登录验证
      * @param context
