@@ -72,19 +72,27 @@ public abstract class AbstractTestCase {
      * @throws Exception exception
      */
     @BeforeClass
-    public void beforeClass() throws Exception {
-        Latkes.init();
-        Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
+    public void beforeClass()  {
 
-        final Collection<Class<?>> classes = Discoverer.discover("org.b3log.solo");
-        BeanManager.start(classes);
-        beanManager = BeanManager.getInstance();
+        try {
+            Latkes.init();
+            Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
+            Collection<Class<?>> classes = Discoverer.discover("org.b3log.solo");
+            BeanManager.start(classes);
+            beanManager = BeanManager.getInstance();
+//            JdbcRepositories.initAllTables();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
 
 //        final Connection connection = Connections.getConnection();
 //        connection.createStatement().execute("DROP ALL OBJECTS");
 //        connection.close();
 
-        JdbcRepositories.initAllTables();
     }
 
     @BeforeMethod
@@ -304,6 +312,10 @@ public abstract class AbstractTestCase {
      */
     public OptionRepository getOptionRepository() {
         return beanManager.getReference(OptionRepository.class);
+    }
+
+    public UserLoginInfoRepository getUserLoginInfoRepository(){
+        return beanManager.getReference(UserLoginInfoRepository.class);
     }
 
     /**

@@ -36,7 +36,7 @@ import java.util.Map;
  * Description :
  */
 @RequestProcessor
-public class LoginProcessor extends BaseProcess{
+public class LoginProcessor extends BaseProcess {
     @Inject
     private Lang langPropsService;
     @Inject
@@ -75,10 +75,11 @@ public class LoginProcessor extends BaseProcess{
 
     /**
      * 获取获取名称对应的Token
+     *
      * @param context
      */
-    @RequestProcessing(value = "/getTicket",method = HttpMethod.POST)
-    public void getTicket(final RequestContext context){
+    @RequestProcessing(value = "/getTicket", method = HttpMethod.POST)
+    public void getTicket(final RequestContext context) {
         JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
@@ -88,12 +89,12 @@ public class LoginProcessor extends BaseProcess{
 
         String userName = context.param("userName");
 
-        if (StringUtils.isEmpty(kid)){
+        if (StringUtils.isEmpty(kid)) {
             renderer.setJSONObject(err("参数校验失败"));
             return;
         }
 
-        if (StringUtils.isEmpty(token)){
+        if (StringUtils.isEmpty(token)) {
             renderer.setJSONObject(err("参数校验失败token"));
         }
 
@@ -108,29 +109,33 @@ public class LoginProcessor extends BaseProcess{
 
     /**
      * 后台登录验证
+     *
      * @param context
      */
-    @RequestProcessing(value="/auth" ,method = HttpMethod.POST)
-    public void auth(final RequestContext context){
+    @RequestProcessing(value = "/auth", method = HttpMethod.POST)
+    public void auth(final RequestContext context) {
 
         LoginForm loginForm = new LoginForm(context);
 
         // 参数校验
-        if (!loginForm.verify()){
+        if (!loginForm.verify()) {
             JsonRenderer renderer = new JsonRenderer();
             context.setRenderer(renderer);
 
             JSONObject err = new JSONObject();
 
-            err.put("resultCode","000001");
-            err.put("resultMsg","参数缺失");
+            err.put("resultCode", "000001");
+            err.put("resultMsg", "参数缺失");
             renderer.setJSONObject(err);
             return;
         }
 
 
+        boolean isLogin = authService.authLogin(loginForm);
 
+        if (isLogin) {
 
+        }
 
 
     }

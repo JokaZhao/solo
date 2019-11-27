@@ -528,6 +528,76 @@
           "legnth": 20
         }
       ]
+    },
+    {
+      "name": "user_login_info",
+      "description": "用户登录信息",
+      "keys": [
+        {
+          "name": "id",
+          "description": "主键",
+          "type": "long",
+          "length": 20
+        },
+        {
+          "name": "user_name",
+          "description": "用户名",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "user_type",
+          "description": "用户类型",
+          "type": "String",
+          "length": 10
+        },
+        {
+          "name": "password",
+          "description": "密码",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "salt",
+          "description": "加密盐值",
+          "type": "String",
+          "length": 64
+        },
+        {
+          "name": "ext_info",
+          "description": "额外参数",
+          "type": "String",
+          "length": 1024
+        },
+        {
+          "name": "is_delete",
+          "description": "是否删除",
+          "type": "boolean",
+          "length": 1
+        },
+        {
+          "name": "creator",
+          "description": "创建者",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "modifier",
+          "description": "修改者",
+          "type": "String",
+          "length": 32
+        },
+        {
+          "name": "gmt_created",
+          "description": "创建时间",
+          "type": "Date"
+        },
+        {
+          "name": "gmt_modified",
+          "description": "修改时间",
+          "type": "Date"
+        }
+      ]
     }
   ]
 }

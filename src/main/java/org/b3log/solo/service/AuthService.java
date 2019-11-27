@@ -67,15 +67,13 @@ public class AuthService {
         try {
             boolean isPass = PasswordHash.validatePassword(salt + password, storePw);
 
-            if (isPass){
-            }
-
+            return isPass;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("",e);
+            throw new RuntimeException("系统异常");
         }
 
-        return false;
     }
 
     /**
