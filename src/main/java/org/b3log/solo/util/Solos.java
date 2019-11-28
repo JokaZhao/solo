@@ -307,12 +307,14 @@ public final class Solos {
     public static void login(final JSONObject user, final HttpServletResponse response) {
         try {
             final String userId = user.optString(Keys.OBJECT_ID);
-            final JSONObject cookieJSONObject = new JSONObject();
-            cookieJSONObject.put(Keys.OBJECT_ID, userId);
             final String b3Key = user.optString(UserExt.USER_B3_KEY);
             final String random = RandomStringUtils.randomAlphanumeric(8);
+
+            final JSONObject cookieJSONObject = new JSONObject();
+            cookieJSONObject.put(Keys.OBJECT_ID, userId);
             cookieJSONObject.put(Keys.TOKEN, b3Key + ":" + random);
             final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), COOKIE_SECRET);
+
             final Cookie cookie = new Cookie(COOKIE_NAME, cookieValue);
             cookie.setPath("/");
             cookie.setMaxAge(COOKIE_EXPIRY);

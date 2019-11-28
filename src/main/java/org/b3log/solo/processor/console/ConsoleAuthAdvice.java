@@ -48,8 +48,6 @@ public class ConsoleAuthAdvice extends ProcessAdvice {
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
 
         HttpServletResponse response = context.getResponse();
-        JSONObject user = userQueryService.getUserByName("Solo");
-        Solos.login(user, response);
 
         final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
         if (null == currentUser) {
