@@ -25,6 +25,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
+import org.b3log.solo.model.UserLoginInfo;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -58,7 +59,7 @@ public class ConsoleAuthAdvice extends ProcessAdvice {
             throw new RequestProcessAdviceException(exception401);
         }
 
-        final String userRole = currentUser.optString(User.USER_ROLE);
+        final String userRole = currentUser.getString(UserLoginInfo.USER_TYPE);
         if (Role.VISITOR_ROLE.equals(userRole)) {
             final JSONObject exception403 = new JSONObject();
             exception403.put(Keys.MSG, "Forbidden to request [" + context.requestURI() + "]");

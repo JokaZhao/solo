@@ -540,6 +540,12 @@
           "length": 20
         },
         {
+          "name": "user_id",
+          "description": "用户ID",
+          "type": "String",
+          "length": 64
+        },
+        {
           "name": "user_name",
           "description": "用户名",
           "type": "String",

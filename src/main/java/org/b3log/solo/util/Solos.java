@@ -34,9 +34,12 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Crypts;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.cache.TokenCache;
+import org.b3log.solo.constants.LoginEnum;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.UserExt;
+import org.b3log.solo.repository.UserLoginInfoRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONObject;
 
@@ -44,10 +47,12 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Solo utilities.
@@ -113,7 +118,7 @@ public final class Solos {
     static {
         String cookieNameConf = Latkes.getLatkeProperty("cookieName");
         if (StringUtils.isBlank(cookieNameConf)) {
-            cookieNameConf = "solo";
+            cookieNameConf = "SomethingInterest";
         }
         COOKIE_NAME = cookieNameConf;
 
@@ -257,6 +262,11 @@ public final class Solos {
 
         final BeanManager beanManager = BeanManager.getInstance();
         final UserRepository userRepository = beanManager.getReference(UserRepository.class);
+
+        UserLoginInfoRepository userLoginInfoRepository = beanManager.getReference(UserLoginInfoRepository.class);
+
+        TokenCache tokenCache = beanManager.getReference(TokenCache.class);
+
         try {
             for (int i = 0; i < cookies.length; i++) {
                 final Cookie cookie = cookies[i];
@@ -265,10 +275,20 @@ public final class Solos {
                 }
 
                 final String value = Crypts.decryptByAES(cookie.getValue(), COOKIE_SECRET);
+
                 final JSONObject cookieJSONObject = new JSONObject(value);
 
-                final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
+                final String userId = cookieJSONObject.getString(LoginEnum.USER_ID.name());
                 if (StringUtils.isBlank(userId)) {
+                    break;
+                }
+                final String userName = cookieJSONObject.getString(LoginEnum.USER_NAME.name());
+                if (StringUtils.isBlank(userName)) {
+                    break;
+                }
+
+                final String userToken = cookieJSONObject.getString(LoginEnum.TOKEN.name());
+                if (StringUtils.isBlank(userToken)) {
                     break;
                 }
 
@@ -276,15 +296,23 @@ public final class Solos {
                 if (null == user) {
                     break;
                 }
+                String authToken = tokenCache.getToken(userName);
 
-                final String b3Key = user.optString(UserExt.USER_B3_KEY);
-                final String tokenVal = cookieJSONObject.optString(Keys.TOKEN);
-                final String token = StringUtils.substringBeforeLast(tokenVal, ":");
-                if (StringUtils.equals(b3Key, token)) {
-                    login(user, response);
-
-                    return user;
+                if (StringUtils.isEmpty(authToken)){
+                    LOGGER.info("authToken is null");
+                    break;
                 }
+
+                if (!authToken.equals(userToken)){
+                    LOGGER.info("token is not equals");
+                    break;
+                }
+
+                //刷新token
+                tokenCache.refreshToken(userName,TimeUnit.DAYS.toMillis(1));
+
+                return userLoginInfoRepository.getByUserId(userId);
+
             }
         } catch (final Exception e) {
             LOGGER.log(Level.TRACE, "Parses cookie failed, clears the cookie [name=" + COOKIE_NAME + "]");
@@ -299,31 +327,41 @@ public final class Solos {
     }
 
     /**
-     * Logins the specified user from the specified request.
-     *
-     * @param response the specified response
-     * @param user     the specified user
+     * 登录，保存用户ID和用户名到cookie
+     * 并且生成一个失效时间为1天的Token
      */
     public static void login(final JSONObject user, final HttpServletResponse response) {
         try {
-            final String userId = user.optString(Keys.OBJECT_ID);
-            final String b3Key = user.optString(UserExt.USER_B3_KEY);
-            final String random = RandomStringUtils.randomAlphanumeric(8);
+            final String userId = user.getString(LoginEnum.USER_ID.getKey());
+
+            BeanManager beanManager = BeanManager.getInstance();
+
+            TokenCache tokenCache = beanManager.getReference(TokenCache.class);
+
+            String tmp = RandomStringUtils.randomAlphanumeric(8);
+
+            String tmpUserName = "login_" + userId + tmp;
+
+            //生成一个时效为1天的Token
+            String token = tokenCache.createToken(tmpUserName, TimeUnit.DAYS.toMillis(1L));
 
             final JSONObject cookieJSONObject = new JSONObject();
-            cookieJSONObject.put(Keys.OBJECT_ID, userId);
-            cookieJSONObject.put(Keys.TOKEN, b3Key + ":" + random);
+            cookieJSONObject.put(LoginEnum.USER_ID.name(), userId);
+            cookieJSONObject.put(LoginEnum.USER_NAME.name(), tmpUserName);
+            cookieJSONObject.put(LoginEnum.TOKEN.name(), token);
+
             final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), COOKIE_SECRET);
 
             final Cookie cookie = new Cookie(COOKIE_NAME, cookieValue);
             cookie.setPath("/");
-            cookie.setMaxAge(COOKIE_EXPIRY);
             cookie.setHttpOnly(COOKIE_HTTP_ONLY);
             response.addCookie(cookie);
+
         } catch (final Exception e) {
             LOGGER.log(Level.WARN, "Can not write cookie", e);
         }
     }
+
 
     /**
      * Logouts the specified user.

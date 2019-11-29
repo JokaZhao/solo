@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS  `solo`.`b3_solo_user_login_info` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `user_id` varchar(64) NOT NULL COMMENT '用户标识号',
     `user_name` varchar(255) NOT NULL COMMENT '用户名',
     `user_type` varchar(10) NOT NULL COMMENT '用户类型：ADMIN or COMMON',
     `password` varchar(255) NOT NULL COMMENT '用户密码',

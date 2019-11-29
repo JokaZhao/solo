@@ -74,6 +74,29 @@ public class TokenCache {
 
     }
 
+    /**
+     * 刷新token的失效时间
+     * @param key
+     * @param time
+     */
+    public void refreshToken(String key,Long time){
+
+        if (StringUtils.isEmpty(key)){
+            return;
+        }
+
+        String token = getToken(key);
+
+        if (StringUtils.isEmpty(token)){
+            return;
+        }
+
+        TokenInfo tokenInfo = cache.get(key);
+
+        cache.put(key,tokenInfo,time);
+
+    }
+
     class TokenInfo {
 
         private final String token;

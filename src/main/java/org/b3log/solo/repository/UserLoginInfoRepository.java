@@ -31,4 +31,13 @@ public class UserLoginInfoRepository extends AbstractRepository {
         }
     }
 
+    public JSONObject getByUserId(String userId){
+        try {
+            return getFirst(new Query().setFilter(new PropertyFilter(UserLoginInfo.USER_ID, FilterOperator.EQUAL, userId)));
+        } catch (RepositoryException e) {
+            logger.error("",e);
+            throw new RuntimeException("查询用户登录信息错误");
+        }
+    }
+
 }
