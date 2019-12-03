@@ -54,62 +54,7 @@
     </div>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
-<script type="text/javascript">
-    (function () {
-        
-         $("#login").click(function(){
-             var pw = $('#password').val();
-             var userName = $('#userName').val();
-
-             if(isEmpty(pw) || isEmpty(userName)){
-
-                $('#msg').text('用户名或者密码为空');
-
-                $('ul').slideToggle();
-                setTimeout(function(){
-                    $('ul').slideToggle();
-                    $('#msg').text('');
-                },2000);
-             }
-
-             showLoading();
-
-             $.ajax({
-                 url: Label.servePath + '/getTicket',
-                 type: 'POST',
-                 async:true,
-                 data:"",
-                 cache: false,
-                 success: function (result, textStatus){
-
-                 }
-             })
-
-         });
-
-         function showLoading() {
-             $('#loginBox').css("display","none");
-             $('#loading').css("display","block");
-         }
-
-        try {
-            $('.startAction').click(function () {
-                var isAgreen = $('#isAgreenCheck').prop('checked') ? '0' : '1'
-                window.location.href = '${servePath}/oauth/github/redirect?referer=__' + isAgreen
-                $('#github').addClass('github--loading')
-            })
-        } catch (e) {
-            document.querySelector('.main').innerHTML = "${staticErrorLabel}"
-        }
-
-        function isEmpty(obj){
-            if(typeof obj == "undefined" || obj == null || obj == ""){
-                return true;
-            }else{
-                return false;
-            }
-        }
-    })()
-</script>
+<script type="text/javascript" src="${staticServePath}/js/login.js" charset="utf-8"></script>
+<#include "service.ftl">
 <link type="text/css" rel="stylesheet"  href="${staticServePath}/scss/loading.css?${staticResourceVersion}" charset="utf-8"/>
 </@commonPage>

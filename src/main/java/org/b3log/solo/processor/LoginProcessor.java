@@ -83,11 +83,13 @@ public class LoginProcessor extends BaseProcess {
         JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
-        String kid = context.param("kid");
+        JSONObject data = context.requestJSON();
 
-        String token = context.param("tokne");
+        String kid = data.getString("kid");
 
-        String userName = context.param("userName");
+        String token = data.getString("token");
+
+        String userName = data.getString("userName");
 
         if (StringUtils.isEmpty(kid)) {
             renderer.setJSONObject(err("参数校验失败"));

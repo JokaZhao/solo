@@ -2,6 +2,7 @@ package org.b3log.solo.model;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.servlet.RequestContext;
+import org.json.JSONObject;
 
 /**
  * Created on 2019/11/21 17:29.
@@ -42,11 +43,12 @@ public class LoginForm {
             throw new RuntimeException("没有");
         }
 
-        this.userName = context.param("userName");
-        this.kid = context.param("kid");
-        this.pw = context.param("pw");
-        this.token = context.param("token");
-        this.ticket = context.param("ticket");
+        JSONObject data = context.requestJSON();
+        this.userName = data.getString("userName");
+        this.kid = data.getString("kid");
+        this.pw = data.getString("pw");
+        this.token = data.getString("token");
+        this.ticket = data.getString("ticket");
 
     }
 
