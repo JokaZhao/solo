@@ -54,7 +54,7 @@
     </div>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="${staticServePath}/js/login.js" charset="utf-8"></script>
+<script type="text/javascript" src="${staticServePath}/js/login.min.js" charset="utf-8"></script>
 <#include "service.ftl">
 <link type="text/css" rel="stylesheet"  href="${staticServePath}/scss/loading.css?${staticResourceVersion}" charset="utf-8"/>
 </@commonPage>

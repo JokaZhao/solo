@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS  `solo`.`b3_solo_user_login_info` (
     `user_type` varchar(10) NOT NULL COMMENT '用户类型：ADMIN or COMMON',
     `password` varchar(255) NOT NULL COMMENT '用户密码',
     `salt` varchar(64) NOT NULL COMMENT '盐值',
+    `oId` varchar(64)  NULL COMMENT '无用字段',
     `ext_info` varchar(1024) DEFAULT NULL COMMENT '扩展字段',
     `is_delete` char(1) NOT NULL DEFAULT 'N' COMMENT '是否删除',
     `creator` varchar(32) NOT NULL DEFAULT 'SYSTEM' COMMENT '创建者',

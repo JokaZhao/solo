@@ -602,6 +602,12 @@
           "name": "gmt_modified",
           "description": "修改时间",
           "type": "Date"
+        },
+        {
+          "name": "oId",
+          "description": "无用",
+          "type": "String",
+          "length": 64
         }
       ]
     }

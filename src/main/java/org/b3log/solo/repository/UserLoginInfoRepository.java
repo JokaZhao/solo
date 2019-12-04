@@ -40,4 +40,16 @@ public class UserLoginInfoRepository extends AbstractRepository {
         }
     }
 
+
+    public void insert(JSONObject data){
+        try {
+            Transaction transaction = super.beginTransaction();
+            super.add(data);
+            transaction.commit();
+        } catch (RepositoryException e) {
+            logger.error("",e);
+            throw new RuntimeException("查询用户登录信息错误");
+        }
+    }
+
 }
