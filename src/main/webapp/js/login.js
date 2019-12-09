@@ -1,4 +1,11 @@
 $(function(){
+
+    $(document).keydown(function(event){
+        if(event.keyCode===13){
+            $("#login").click();
+        }
+    });
+
     $("#login").click(function(){
         var pw = $('#password').val();
         var userName = $('#userName').val();
@@ -25,16 +32,30 @@ $(function(){
 
         console.log(data);
         request('/getTicket',data,function (result, textStatus){
-            console.log(result);
-            console.log(textStatus);
+
+            var ticket = result.ticket;
+
+            var ky = CryptoJS.enc.Utf8.parse(ticket);
+
+
+            var srcs = CryptoJS.enc.Utf8.parse(pw);
+
+            var pwEncode = CryptoJS.AES.encrypt(srcs, ky, {
+                mode: CryptoJS.mode.ECB,
+                padding: CryptoJS.pad.Pkcs7
+            });
+            //这个加密出来的msg是hex编码的
+            var pendingMsg = pwEncode.toString();
 
             var auth = {
                 "userName":userName,
                 "kid":data.kid,
-                "pw":pw,
+                "pw":pendingMsg,
                 "token":data.token,
-                "ticket":result.ticket
+                "ticket":ticket
             };
+
+            console.log(auth);
 
             request("/auth",auth,function (result, status) {
                 console.log(result);

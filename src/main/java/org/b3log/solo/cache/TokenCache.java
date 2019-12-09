@@ -1,5 +1,6 @@
 package org.b3log.solo.cache;
 
+import jodd.util.StringUtil;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.solo.common.ExpireMap;
@@ -36,10 +37,12 @@ public class TokenCache {
         if (tokenInfo == null) {
             return null;
         }
+        String token = tokenInfo.getToken();
 
-        return tokenInfo.getToken();
+        return token;
 
     }
+
 
 
     /**
@@ -72,6 +75,32 @@ public class TokenCache {
 
         return getToken(userName);
 
+    }
+
+    public String createAesKey(String key,Long time){
+
+        if (StringUtils.isEmpty(key)){
+            throw new RuntimeException("创建登录Aes Key失败，Key为空");
+        }
+        String token = getToken(key);
+
+        if (token != null){
+            return token;
+        }
+
+        String uuid16 = getUUID16();
+
+        cache.put(key, new TokenInfo(uuid16), time);
+
+        return getToken(key);
+
+    }
+
+    public static String getUUID16()
+    {
+        String uuid= UUID.randomUUID().toString().replace("-","");
+        uuid = uuid.substring(0,16);
+        return uuid;
     }
 
     /**

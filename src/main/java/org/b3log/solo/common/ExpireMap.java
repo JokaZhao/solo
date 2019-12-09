@@ -169,6 +169,12 @@ public class ExpireMap<K, V> extends ConcurrentHashMap<K, V> {
         return set;
     }
 
+    @Override
+    public V remove(Object key) {
+        expiryMap.remove(key);
+        return super.remove(key);
+    }
+
     /**
      * 检查是否已经过期
      *

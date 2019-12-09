@@ -37,7 +37,7 @@ public class AuthService {
 
         commonAuth(kid, paramToken);
 
-        String ticket = tokenCache.createToken(userName, 10 * 1000L);
+        String ticket = tokenCache.createAesKey(userName, 10 * 1000L);
 
         return ticket;
 
@@ -56,9 +56,14 @@ public class AuthService {
         }
 
         //明文密码
-        String password = AES.getInstance().decrypt(form.getPw(), ticket);
+        String password = AES.getInstance().aesDecrypt(form.getPw(), ticket);
 
         JSONObject userInfo = userLoginInfoRepository.getByUserName(form.getUserName());
+
+        if (userInfo == null){
+            LOGGER.warn("找不到该用户，{}",form.getUserName());
+            throw new RuntimeException("账号或者密码错误");
+        }
 
         String salt = userInfo.getString("salt");
 

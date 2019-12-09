@@ -22,12 +22,13 @@ public class InitUser extends AbstractTestCase {
 
         UserLoginInfoRepository userLoginInfoRepository = getUserLoginInfoRepository();
 
-        String userName = "";
+        String userName = "Joka";
 
-        String password = "";
+        String password = "dominjoka0502";
 
         JSONObject user = new JSONObject();
         user.put("user_name", userName);
+        user.put("id",10000);
         user.put("user_type", "admin");
         user.put("user_id", UUID.randomUUID().toString().replace("-",""));
 
