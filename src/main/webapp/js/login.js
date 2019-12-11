@@ -11,14 +11,8 @@ $(function(){
         var userName = $('#userName').val();
 
         if(isEmpty(pw) || isEmpty(userName)){
-
-            $('#msg').text('用户名或者密码为空');
-
-            $('ul').slideToggle();
-            setTimeout(function(){
-                $('ul').slideToggle();
-                $('#msg').text('');
-            },2000);
+            toggleMsg('用户名或者密码为空');
+            return;
         }
 
         showLoading();
@@ -60,6 +54,16 @@ $(function(){
             request("/auth",auth,function (result, status) {
                 console.log(result);
                 console.log(status);
+
+                if(result.resultCode !== '000000'){
+                    hideLoading();
+
+                    $('#password').val('');
+
+                    toggleMsg(result.resultMsg);
+
+                    return;
+                }
             });
         });
 
@@ -89,6 +93,15 @@ $(function(){
         $('#loading').css("display","none");
     }
 
+    function toggleMsg(msg) {
+        $('#msg').text(msg);
+        $('ul').slideToggle();
+        setTimeout(function(){
+            $('ul').slideToggle();
+            $('#msg').text('');
+        },2000);
+    }
+    
     function isEmpty(obj){
         if(typeof obj == "undefined" || obj == null || obj == ""){
             return true;

@@ -23,9 +23,11 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.OptionQueryService;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -53,6 +55,9 @@ public class LoginProcessor extends BaseProcess {
 
     @Inject
     private AuthService authService;
+
+    @Inject
+    private UserLoginInfoRepository userLoginInfoRepository;
 
     @RequestProcessing(value = "/login", method = HttpMethod.GET)
     public void showLogin(final RequestContext context) {
@@ -117,29 +122,43 @@ public class LoginProcessor extends BaseProcess {
     @RequestProcessing(value = "/auth", method = HttpMethod.POST)
     public void auth(final RequestContext context) {
 
-        LoginForm loginForm = new LoginForm(context);
+        try {
+            LoginForm loginForm = new LoginForm(context);
 
-        // 参数校验
-        if (!loginForm.verify()) {
+            // 参数校验
+            if (!loginForm.verify()) {
+                JsonRenderer renderer = new JsonRenderer();
+                context.setRenderer(renderer);
+
+                JSONObject err = new JSONObject();
+
+                err.put("resultCode", "000001");
+                err.put("resultMsg", "参数缺失");
+                renderer.setJSONObject(err);
+                return;
+            }
+
+
+            boolean isLogin = authService.authLogin(loginForm);
+
+            if (isLogin) {
+                JSONObject user = userLoginInfoRepository.getByUserName(loginForm.getUserName());
+                HttpServletResponse response = context.getResponse();
+                Solos.login(user, response);
+                context.sendRedirect("/admin-index.do");
+            }else {
+                JSONObject err = err("账号或者密码错误");
+                JsonRenderer renderer = new JsonRenderer();
+                context.setRenderer(renderer);
+                renderer.setJSONObject(err);
+            }
+
+        }catch (Exception e){
+            JSONObject err = err("账号或者密码错误");
             JsonRenderer renderer = new JsonRenderer();
             context.setRenderer(renderer);
-
-            JSONObject err = new JSONObject();
-
-            err.put("resultCode", "000001");
-            err.put("resultMsg", "参数缺失");
             renderer.setJSONObject(err);
-            return;
         }
-
-
-        boolean isLogin = authService.authLogin(loginForm);
-
-        if (isLogin) {
-
-        }
-
-
     }
 
 }

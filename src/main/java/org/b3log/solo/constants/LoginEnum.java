@@ -9,9 +9,9 @@ package org.b3log.solo.constants;
 public enum LoginEnum {
 
 
-    USER_NAME("userName"),
+    USER_NAME("user_name"),
     TOKEN("token"),
-    USER_ID("userId");
+    USER_ID("user_id");
 
 
     private String key;
@@ -19,6 +19,8 @@ public enum LoginEnum {
     public String getKey() {
         return key;
     }
+
+
 
     LoginEnum(String key) {
         this.key = key;

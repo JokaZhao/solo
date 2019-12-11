@@ -1,7 +1,7 @@
 <#include "macro-common_page.ftl">
 <@commonPage "${welcomeToSoloLabel}!">
 <h2>
-    <span>${welcomeToSoloLabel} Solo</span>
+    <span>${welcomeToSoloLabel} JokaGamer</span>
 </h2>
 
 <div id="github">

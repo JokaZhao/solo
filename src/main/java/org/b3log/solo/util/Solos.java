@@ -292,7 +292,7 @@ public final class Solos {
                     break;
                 }
 
-                JSONObject user = userRepository.get(userId);
+                JSONObject user = userLoginInfoRepository.getByUserId(userId);
                 if (null == user) {
                     break;
                 }
