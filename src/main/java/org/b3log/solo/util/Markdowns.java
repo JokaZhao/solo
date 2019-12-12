@@ -60,6 +60,9 @@ import java.util.concurrent.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 2.3.1.10, Sep 23, 2019
  * @since 0.4.5
+ *
+ * Markdown渲染引擎，需要在后端启动一个Lute服务，这里会将请求发送到Lute服务器渲染成合适到Markdown文件
+ *
  */
 public final class Markdowns {
 

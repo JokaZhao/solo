@@ -571,9 +571,9 @@ public class DataModelService {
     /**
      * Fills common parts (header, side and footer).
      *
-     * @param context    the specified HTTP servlet request context
-     * @param dataModel  the specified data model
-     * @param preference the specified preference
+     * @param context    the specified HTTP servlet request context http请求
+     * @param dataModel  the specified data model 填充的数据
+     * @param preference the specified preference 从option表中获取的配置
      * @throws ServiceException service exception
      */
     public void fillCommon(final RequestContext context, final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
@@ -1083,6 +1083,7 @@ public class DataModelService {
             }
 
             topBarModel.put(Common.IS_LOGGED_IN, true);
+            // todo 退出登陆
             topBarModel.put(Common.LOGOUT_URL, userQueryService.getLogoutURL());
             topBarModel.put(Common.IS_ADMIN, Role.ADMIN_ROLE.equals(currentUser.getString(User.USER_ROLE)));
             topBarModel.put(Common.IS_VISITOR, Role.VISITOR_ROLE.equals(currentUser.getString(User.USER_ROLE)));

@@ -33,6 +33,7 @@ import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.jdbc.util.Connections;
+import org.b3log.solo.constants.UserInfoKey;
 import org.b3log.solo.util.Lang;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
@@ -124,42 +125,60 @@ public class AdminConsole {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer(context, templateName);
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModel.putAll(langs);
+        //todo
+//        dataModel.putAll(langs);
         final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
-        final String userName = currentUser.optString(User.USER_NAME);
-        dataModel.put(User.USER_NAME, userName);
-        final String roleName = currentUser.optString(User.USER_ROLE);
+        final String userName = currentUser.optString(UserInfoKey.USER_NAME);
+        dataModel.put(UserInfoKey.USER_NAME, userName);
+        final String roleName = currentUser.optString(UserInfoKey.USER_ROLE);
         dataModel.put(User.USER_ROLE, roleName);
+        //头像地址
         final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
         dataModel.put(Common.GRAVATAR, userAvatar);
 
         try {
             final JSONObject preference = optionQueryService.getPreference();
+            // 本地语言zh_CN
             dataModel.put(Option.ID_C_LOCALE_STRING, preference.getString(Option.ID_C_LOCALE_STRING));
+            // 博客标题
             dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
+            // 博客子标题
             dataModel.put(Option.ID_C_BLOG_SUBTITLE, preference.getString(Option.ID_C_BLOG_SUBTITLE));
+            // 版本号
             dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+
+            // 静态资源版本号,没有配置的情况下，是应用启动时间戳
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+            // 年份
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+            // 文章列表显示个数，20
             dataModel.put(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT));
+            // 文章列表分页数， 15
             dataModel.put(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             final JSONObject skin = optionQueryService.getSkin();
+
             dataModel.put(Option.CATEGORY_C_SKIN, skin.optString(Option.ID_C_SKIN_DIR_NAME));
             Keys.fillRuntime(dataModel);
             dataModelService.fillMinified(dataModel);
+            // 是否启用Lute Markdown渲染引擎，默认false
             dataModel.put(Common.LUTE_AVAILABLE, Markdowns.LUTE_AVAILABLE);
             // 内置 HTTPS+CDN 文件存储 https://github.com/b3log/solo/issues/12556
-            dataModel.put(Common.UPLOAD_TOKEN, "");
-            dataModel.put(Common.UPLOAD_URL, "");
-            dataModel.put(Common.UPLOAD_MSG, langPropsService.get("getUploadTokenErrLabel"));
+//            dataModel.put(Common.UPLOAD_TOKEN, "");
+//            dataModel.put(Common.UPLOAD_URL, "");
+//            dataModel.put(Common.UPLOAD_MSG, langPropsService.get("getUploadTokenErrLabel"));
+
+            // 这里会获取文件上传到token，但是使用到是社区的，为不需要，所以直接注释里面的代码
             final JSONObject upload = Solos.getUploadToken(context);
             if (null != upload) {
                 dataModel.put(Common.UPLOAD_TOKEN, upload.optString(Common.UPLOAD_TOKEN));
                 dataModel.put(Common.UPLOAD_URL, upload.optString(Common.UPLOAD_URL));
                 dataModel.put(Common.UPLOAD_MSG, upload.optString(Common.UPLOAD_MSG));
             }
+            // 填充站点图标，没有则使用默认的
             dataModelService.fillFaviconURL(dataModel, preference);
+            // 填充站点链接
             dataModelService.fillUsite(dataModel);
+
             dataModelService.fillCommon(context, dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Admin index render failed", e);

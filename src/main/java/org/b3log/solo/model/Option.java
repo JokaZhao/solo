@@ -129,7 +129,7 @@ public final class Option {
     public static final String ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT = "mostViewArticleDisplayCount";
 
     /**
-     * Key of article list display count.
+     * 文章显示个数，默认20
      */
     public static final String ID_C_ARTICLE_LIST_DISPLAY_COUNT = "articleListDisplayCount";
 

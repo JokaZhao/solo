@@ -74,9 +74,14 @@ public class Lang {
             throw e;
         } else {
             try {
-                return this.replaceVars(ResourceBundle.getBundle(baseName, locale).getString(key));
+                String val = new String(ResourceBundle.getBundle(baseName, locale).getString(key).getBytes("ISO-8859-1"), "UTF-8");
+                return this.replaceVars(val);
             } catch (MissingResourceException var5) {
                 LOGGER.log(Level.WARN, "{0}, get it from default locale [{1}]", new Object[]{var5.getMessage(), Latkes.getLocale()});
+                return this.replaceVars(ResourceBundle.getBundle(baseName, Latkes.getLocale()).getString(key));
+            } catch (UnsupportedEncodingException e) {
+                LOGGER.log(Level.WARN, "{0}, get it from default locale [{1}]", new Object[]{e.getMessage(), Latkes.getLocale()});
+
                 return this.replaceVars(ResourceBundle.getBundle(baseName, Latkes.getLocale()).getString(key));
             }
         }
