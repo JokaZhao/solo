@@ -22,6 +22,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.solo.constants.RoleEnum;
+import org.b3log.solo.constants.UserInfoKey;
 import org.b3log.solo.util.Lang;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
@@ -92,12 +94,21 @@ public class CommentConsole {
         try {
             final String commentId = context.pathVar("id");
             final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
-            if (!commentQueryService.canAccessComment(commentId, currentUser)) {
+
+            if (!RoleEnum.ADMIN.getCode().equals(currentUser.get(UserInfoKey.USER_ROLE))){
+
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
 
                 return;
             }
+            // 这里设置了只能删除自己的评论
+//            if (!commentQueryService.canAccessComment(commentId, currentUser)) {
+//                ret.put(Keys.STATUS_CODE, false);
+//                ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
+//
+//                return;
+//            }
 
             commentMgmtService.removeArticleComment(commentId);
 

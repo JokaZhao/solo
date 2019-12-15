@@ -34,6 +34,8 @@ import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.*;
+import org.b3log.solo.constants.RoleEnum;
+import org.b3log.solo.constants.UserInfoKey;
 import org.b3log.solo.util.Lang;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
@@ -625,6 +627,7 @@ public class DataModelService {
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             String footerContent = "";
+            // 从配置中获取页脚内容
             final JSONObject opt = optionQueryService.getOptionById(Option.ID_C_FOOTER_CONTENT);
             if (null != opt) {
                 footerContent = opt.optString(Option.OPTION_VALUE);
@@ -636,9 +639,10 @@ public class DataModelService {
             dataModel.put(User.USER_NAME, "");
             final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (null != currentUser) {
-                final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
+//                final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
+                String userAvatar = "https://static.b3log.org/images/brand/solo-32.png";
                 dataModel.put(Common.GRAVATAR, userAvatar);
-                dataModel.put(User.USER_NAME, currentUser.optString(User.USER_NAME));
+                dataModel.put(User.USER_NAME, currentUser.optString(UserInfoKey.USER_NAME));
             }
 
             // Activates plugins
@@ -673,7 +677,8 @@ public class DataModelService {
         try {
             LOGGER.debug("Filling header....");
             final String topBarHTML = getTopBarHTML(context);
-            dataModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
+            // 这个Login_URL是在401页面使用，暂时屏蔽掉
+//            dataModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
             dataModel.put(Common.LOGOUT_URL, userQueryService.getLogoutURL());
             dataModel.put(Common.ONLINE_VISITOR_CNT, StatisticQueryService.getOnlineVisitorCount());
             dataModel.put(Common.TOP_BAR, topBarHTML);
@@ -683,11 +688,13 @@ public class DataModelService {
             dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
             dataModel.put(Option.ID_C_BLOG_SUBTITLE, preference.getString(Option.ID_C_BLOG_SUBTITLE));
             dataModel.put(Option.ID_C_HTML_HEAD, preference.getString(Option.ID_C_HTML_HEAD));
+            // 页面meta关键词，在SEO搜索时使用
             String metaKeywords = preference.getString(Option.ID_C_META_KEYWORDS);
             if (StringUtils.isBlank(metaKeywords)) {
                 metaKeywords = "";
             }
             dataModel.put(Option.ID_C_META_KEYWORDS, metaKeywords);
+            // meta描述
             String metaDescription = preference.getString(Option.ID_C_META_DESCRIPTION);
             if (StringUtils.isBlank(metaDescription)) {
                 metaDescription = "";
@@ -695,6 +702,8 @@ public class DataModelService {
             dataModel.put(Option.ID_C_META_DESCRIPTION, metaDescription);
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             dataModel.put(Common.IS_LOGGED_IN, null != Solos.getCurrentUser(context.getRequest(), context.getResponse()));
+
+            // 存放的是一个地址
             dataModel.put(Common.FAVICON_API, Solos.FAVICON_API);
             final String noticeBoard = preference.getString(Option.ID_C_NOTICE_BOARD);
             dataModel.put(Option.ID_C_NOTICE_BOARD, noticeBoard);
@@ -1085,11 +1094,13 @@ public class DataModelService {
             topBarModel.put(Common.IS_LOGGED_IN, true);
             // todo 退出登陆
             topBarModel.put(Common.LOGOUT_URL, userQueryService.getLogoutURL());
-            topBarModel.put(Common.IS_ADMIN, Role.ADMIN_ROLE.equals(currentUser.getString(User.USER_ROLE)));
-            topBarModel.put(Common.IS_VISITOR, Role.VISITOR_ROLE.equals(currentUser.getString(User.USER_ROLE)));
+            // 判断用户是否是管理员
+            topBarModel.put(Common.IS_ADMIN, RoleEnum.ADMIN.getCode().equals(currentUser.getString(UserInfoKey.USER_ROLE)));
+            topBarModel.put(Common.IS_VISITOR, RoleEnum.VISITOR.equals(currentUser.getString(UserInfoKey.USER_ROLE)));
+
             topBarModel.put("adminLabel", langPropsService.get("adminLabel"));
             topBarModel.put("logoutLabel", langPropsService.get("logoutLabel"));
-            final String userName = currentUser.getString(User.USER_NAME);
+            final String userName = currentUser.getString(UserInfoKey.USER_NAME);
             topBarModel.put(User.USER_NAME, userName);
             topBarTemplate.process(topBarModel, stringWriter);
 

@@ -87,6 +87,7 @@ public final class Images {
      * Gets an image URL randomly. Sees https://github.com/b3log/bing for more details.
      *
      * @return an image URL
+     * // todo 换成自己oss地址
      */
     public static String randImage() {
         try {

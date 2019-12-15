@@ -263,7 +263,7 @@ $.extend(Admin.prototype, {
    */
   inited: function () {
     // Removes functions with the current user role
-    if (Label.userRole !== 'adminRole') {
+    if (Label.userRole !== 'admin') {
       for (var i = 0; i < this.adTools.length; i++) {
         $('#tabs').tabs('remove', this.adTools[i])
       }

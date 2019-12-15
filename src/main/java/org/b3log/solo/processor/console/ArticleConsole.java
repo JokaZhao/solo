@@ -25,6 +25,8 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.solo.constants.RoleEnum;
+import org.b3log.solo.constants.UserInfoKey;
 import org.b3log.solo.util.Lang;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.RequestContext;
@@ -292,12 +294,20 @@ public class ArticleConsole {
         final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
 
         try {
-            if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
+
+            if (!RoleEnum.ADMIN.getCode().equals(currentUser.getString(UserInfoKey.USER_ROLE))){
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
 
                 return;
             }
+
+//            if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
+//                ret.put(Keys.STATUS_CODE, false);
+//                ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
+//
+//                return;
+//            }
 
             articleMgmtService.removeArticle(articleId);
 

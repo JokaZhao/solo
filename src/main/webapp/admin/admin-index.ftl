@@ -1,22 +1,4 @@
-<#--
 
-    Solo - A small and beautiful blogging system written in Java.
-    Copyright (c) 2010-present, b3log.org
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
--->
 <#include "../common-template/macro-common_head.ftl"/>
 <!DOCTYPE html>
 <html>
@@ -161,11 +143,11 @@
             </div>
             <div class="fn__clear"></div>
             <div class="footer">
-                Powered by <a href="https://b3log.org" target="_blank">B3log 开源</a> • <a href="https://solo.b3log.org" target="_blank">Solo</a> ${version}
+                Powered by Joka 开源 · Solo
             </div>
         </div>
         <script src="${staticServePath}/js/lib/compress/admin-lib.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vditor@1.8.13/dist/index.min.js"></script>
+        <script src="${staticServePath}/js/admin/index.min.js"></script>
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>
@@ -188,7 +170,7 @@
         <script src="${staticServePath}/js/admin/about.js"></script>
         <script src="${staticServePath}/js/admin/themeList.js"></script>
         <#else>
-        <script src="${staticServePath}/js/admin/admin.min.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/admin/all.min.js?${staticResourceVersion}"></script>
         </#if>
         <#include "admin-label.ftl">
         ${plugins}

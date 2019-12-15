@@ -44,6 +44,7 @@ import org.b3log.solo.handler.PermalinkHandler;
 import org.b3log.solo.processor.console.*;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
+import org.b3log.solo.task.CronMgmtService;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
@@ -141,8 +142,9 @@ public final class SoloServletListener extends AbstractServletListener {
         Stopwatchs.end();
         LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
 
-        final CronMgmtService cronMgmtService = beanManager.getReference(CronMgmtService.class);
-        cronMgmtService.start();
+        // 定时任务，暂时不启动
+//        final CronMgmtService cronMgmtService = beanManager.getReference(CronMgmtService.class);
+//        cronMgmtService.start();
     }
 
     @Override
@@ -232,12 +234,6 @@ public final class SoloServletListener extends AbstractServletListener {
             final PluginRefresher pluginRefresher = beanManager.getReference(PluginRefresher.class);
             eventManager.registerListener(pluginRefresher);
             eventManager.registerListener(new ViewLoadEventHandler());
-            final B3ArticleSender articleSender = beanManager.getReference(B3ArticleSender.class);
-            eventManager.registerListener(articleSender);
-            final B3ArticleUpdater articleUpdater = beanManager.getReference(B3ArticleUpdater.class);
-            eventManager.registerListener(articleUpdater);
-            final B3CommentSender commentSender = beanManager.getReference(B3CommentSender.class);
-            eventManager.registerListener(commentSender);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Register event handlers failed", e);
 

@@ -15,13 +15,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.service;
+package org.b3log.solo.task;
 
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Stopwatchs;
+import org.b3log.solo.service.*;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -33,6 +34,7 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.4, Apr 18, 2019
  * @since 2.9.7
+ * 定时任务
  */
 @Service
 public class CronMgmtService {

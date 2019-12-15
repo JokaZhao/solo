@@ -121,19 +121,15 @@ public class LoginProcessor extends BaseProcess {
      */
     @RequestProcessing(value = "/auth", method = HttpMethod.POST)
     public void auth(final RequestContext context) {
-
+        JsonRenderer renderer = new JsonRenderer();
+        context.setRenderer(renderer);
         try {
             LoginForm loginForm = new LoginForm(context);
 
             // 参数校验
             if (!loginForm.verify()) {
-                JsonRenderer renderer = new JsonRenderer();
                 context.setRenderer(renderer);
-
-                JSONObject err = new JSONObject();
-
-                err.put("resultCode", "000001");
-                err.put("resultMsg", "参数缺失");
+                JSONObject err = err("参数缺失");
                 renderer.setJSONObject(err);
                 return;
             }
@@ -145,20 +141,32 @@ public class LoginProcessor extends BaseProcess {
                 JSONObject user = userLoginInfoRepository.getByUserName(loginForm.getUserName());
                 HttpServletResponse response = context.getResponse();
                 Solos.login(user, response);
-                context.sendRedirect("/admin-index.do");
+                JSONObject result = new JSONObject();
+                result.put("resultCode","000000");
+                result.put("resultMsg",Latkes.getServePath()+"/login/redirect");
+                renderer.setJSONObject(result);
+
+//                context.sendRedirect(Latkes.getServePath()+"/admin-index.do");
             }else {
                 JSONObject err = err("账号或者密码错误");
-                JsonRenderer renderer = new JsonRenderer();
-                context.setRenderer(renderer);
                 renderer.setJSONObject(err);
             }
 
         }catch (Exception e){
             JSONObject err = err("账号或者密码错误");
-            JsonRenderer renderer = new JsonRenderer();
-            context.setRenderer(renderer);
             renderer.setJSONObject(err);
         }
     }
+
+    @RequestProcessing(value = "/login/redirect", method = HttpMethod.GET)
+    public void loginRedirect(final RequestContext context){
+        JSONObject user = Solos.getCurrentUser(context.getRequest(), context.getResponse());
+        if (user == null){
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        context.sendRedirect(Latkes.getServePath()+"/admin-index.do#main");
+    }
+
 
 }

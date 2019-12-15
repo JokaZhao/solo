@@ -466,14 +466,15 @@ public class ArticleMgmtService {
             articleRepository.update(articleId, article);
             article.put(Common.POST_TO_COMMUNITY, postToCommunity);
 
-            final boolean publishNewArticle = Article.ARTICLE_STATUS_C_DRAFT == oldArticle.optInt(ARTICLE_STATUS) && Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(ARTICLE_STATUS);
-            final JSONObject eventData = new JSONObject();
-            eventData.put(ARTICLE, article);
-            if (publishNewArticle) {
-                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
-            } else {
-                eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
-            }
+            //这段代码是将文件改动更新推送到github
+//            final boolean publishNewArticle = Article.ARTICLE_STATUS_C_DRAFT == oldArticle.optInt(ARTICLE_STATUS) && Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(ARTICLE_STATUS);
+//            final JSONObject eventData = new JSONObject();
+//            eventData.put(ARTICLE, article);
+//            if (publishNewArticle) {
+//                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
+//            } else {
+//                eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
+//            }
 
             transaction.commit();
         } catch (final ServiceException e) {
@@ -571,11 +572,12 @@ public class ArticleMgmtService {
             transaction.commit();
 
             article.put(Common.POST_TO_COMMUNITY, postToCommunity);
-            if (Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(ARTICLE_STATUS)) {
-                final JSONObject eventData = new JSONObject();
-                eventData.put(Article.ARTICLE, article);
-                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
-            }
+            //下面到代码是将新增到文章推送到Github
+//            if (Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(ARTICLE_STATUS)) {
+//                final JSONObject eventData = new JSONObject();
+//                eventData.put(Article.ARTICLE, article);
+//                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
+//            }
 
             return ret;
         } catch (final Exception e) {

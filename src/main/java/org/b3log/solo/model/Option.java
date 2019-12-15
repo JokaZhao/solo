@@ -272,7 +272,7 @@ public final class Option {
     /**
      * Category - HacPai.
      */
-    public static final String CATEGORY_C_HACPAI = "hacpai";
+    public static final String CATEGORY_C_HACPAI = "JokaGamer";
 
     /**
      * Category - Skin.
@@ -313,12 +313,12 @@ public final class Option {
         /**
          * Default enable sync push GitHub.
          */
-        public static final String DEFAULT_SYNC_GITHUB = "true";
+        public static final String DEFAULT_SYNC_GITHUB = "false";
 
         /**
          * Default enable sync pull GitHub.
          */
-        public static final String DEFAULT_PULL_GITHUB = "true";
+        public static final String DEFAULT_PULL_GITHUB = "false";
 
         /**
          * Default favicon URL.

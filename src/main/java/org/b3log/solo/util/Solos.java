@@ -36,6 +36,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.cache.TokenCache;
 import org.b3log.solo.constants.LoginEnum;
+import org.b3log.solo.constants.RoleEnum;
 import org.b3log.solo.constants.UserInfoKey;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -404,7 +405,7 @@ public final class Solos {
             return false;
         }
 
-        return Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE));
+        return RoleEnum.ADMIN.getCode().equals(user.optString(UserInfoKey.USER_ROLE));
     }
 
     /**

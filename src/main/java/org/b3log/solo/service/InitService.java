@@ -206,7 +206,7 @@ public class InitService {
 
     /**
      * Initializes Solo.
-     *
+     * 系统初始化，入参是用户到信息，其实只需要传两个，一个用户名，一个B3Key
      * @param requestJSONObject the specified request json object, for example,
      *                          {
      *                          "userName": "",
@@ -446,7 +446,7 @@ public class InitService {
 
     /**
      * Initializes statistic.
-     *
+     * 初始化统计信息
      * @throws RepositoryException repository exception
      * @throws JSONException       json exception
      */
@@ -464,31 +464,35 @@ public class InitService {
 
     /**
      * Initializes options.
-     *
+     * 初始化配置表
      * @param requestJSONObject the specified json object
      * @throws Exception exception
      */
     private void initOptions(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
 
+        // 代码高亮主题配置，默认github
         final JSONObject hljsThemeOpt = new JSONObject();
         hljsThemeOpt.put(Keys.OBJECT_ID, Option.ID_C_HLJS_THEME);
         hljsThemeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         hljsThemeOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_HLJS_THEME);
         optionRepository.add(hljsThemeOpt);
 
+        // 配置是否将文件推送到Github
         final JSONObject syncGitHubOpt = new JSONObject();
         syncGitHubOpt.put(Keys.OBJECT_ID, Option.ID_C_SYNC_GITHUB);
         syncGitHubOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         syncGitHubOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_SYNC_GITHUB);
         optionRepository.add(syncGitHubOpt);
 
+        // 配置是否从GitHub拉取文章内容
         final JSONObject pullGitHubOpt = new JSONObject();
         pullGitHubOpt.put(Keys.OBJECT_ID, Option.ID_C_PULL_GITHUB);
         pullGitHubOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         pullGitHubOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_PULL_GITHUB);
         optionRepository.add(pullGitHubOpt);
 
+        // 配置网站展示到favicon
         final JSONObject faviconURLOpt = new JSONObject();
         faviconURLOpt.put(Keys.OBJECT_ID, Option.ID_C_FAVICON_URL);
         faviconURLOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);

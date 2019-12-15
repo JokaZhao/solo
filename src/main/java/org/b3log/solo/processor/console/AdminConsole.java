@@ -126,14 +126,16 @@ public class AdminConsole {
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final Map<String, Object> dataModel = renderer.getDataModel();
         //todo
-//        dataModel.putAll(langs);
+        dataModel.putAll(langs);
         final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
         final String userName = currentUser.optString(UserInfoKey.USER_NAME);
-        dataModel.put(UserInfoKey.USER_NAME, userName);
+        dataModel.put(User.USER_NAME, userName);
         final String roleName = currentUser.optString(UserInfoKey.USER_ROLE);
         dataModel.put(User.USER_ROLE, roleName);
         //头像地址
-        final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
+//        final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
+        //todo
+        String userAvatar = "https://static.b3log.org/images/brand/solo-32.png";
         dataModel.put(Common.GRAVATAR, userAvatar);
 
         try {
@@ -163,9 +165,9 @@ public class AdminConsole {
             // 是否启用Lute Markdown渲染引擎，默认false
             dataModel.put(Common.LUTE_AVAILABLE, Markdowns.LUTE_AVAILABLE);
             // 内置 HTTPS+CDN 文件存储 https://github.com/b3log/solo/issues/12556
-//            dataModel.put(Common.UPLOAD_TOKEN, "");
-//            dataModel.put(Common.UPLOAD_URL, "");
-//            dataModel.put(Common.UPLOAD_MSG, langPropsService.get("getUploadTokenErrLabel"));
+            dataModel.put(Common.UPLOAD_TOKEN, "");
+            dataModel.put(Common.UPLOAD_URL, "");
+            dataModel.put(Common.UPLOAD_MSG, langPropsService.get("getUploadTokenErrLabel"));
 
             // 这里会获取文件上传到token，但是使用到是社区的，为不需要，所以直接注释里面的代码
             final JSONObject upload = Solos.getUploadToken(context);

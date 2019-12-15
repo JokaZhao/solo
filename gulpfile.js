@@ -89,7 +89,7 @@ function miniAdmin () {
     './src/main/webapp/js/admin/about.js']
   return gulp.src(jsJqueryUpload).
     pipe(uglify({output: {ascii_only: true}})).
-    pipe(concat('admin.min.js')).
+    pipe(concat('all.min.js')).
     pipe(gulp.dest('./src/main/webapp/js/admin'))
 
 }

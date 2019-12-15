@@ -130,7 +130,7 @@ public abstract class AbstractTestCase {
     public void init() throws Exception {
         final InitService initService = getInitService();
         final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_NAME, "Solo");
+        requestJSONObject.put(User.USER_NAME, "Joka");
         requestJSONObject.put(UserExt.USER_B3_KEY, "pass");
         initService.init(requestJSONObject);
         final UserQueryService userQueryService = getUserQueryService();
