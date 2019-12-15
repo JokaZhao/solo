@@ -637,7 +637,8 @@ public class ArticleQueryService {
         try {
             final List<JSONObject> ret = new ArrayList<>();
             final String query = "SELECT\n" +
-                    "\t*\n" +
+                    "\ta.*,\n" +
+                    "\ta.oId\n" +
                     "FROM\n" +
                     "\tb3_solo_article AS a,\n" +
                     "\tb3_solo_archivedate_article aa\n" +

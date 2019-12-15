@@ -63,6 +63,8 @@ $(function(){
                     toggleMsg(result.resultMsg);
 
                     return;
+                }else {
+                    window.location.href=result.resultMsg;
                 }
             });
         });
@@ -74,7 +76,7 @@ $(function(){
         $.ajax({
             url: Service.servePath + url,
             type: 'POST',
-            async: true,
+            async: false,
             data: JSON.stringify(data),
             cache: false,
             success: function (result, textStatus) {
